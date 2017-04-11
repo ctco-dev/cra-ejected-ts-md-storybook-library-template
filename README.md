@@ -118,10 +118,10 @@ my-app/
     favicon.ico
   src/
     App.css
-    App.js
-    App.test.js
+    App.tsx
+    App.test.tsx
     index.css
-    index.js
+    index.tsx
     logo.svg
 ```
 
