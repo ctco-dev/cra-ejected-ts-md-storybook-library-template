@@ -1,14 +1,13 @@
 import * as React from 'react';
 import './App.css';
-
-const logo = require('./logo.svg');
+import * as logo from './logo.svg';
 
 class App extends React.Component<any, any> {
   render() {
     return (
       <div className="App">
         <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <img src={logo as any} className="App-logo" alt="logo" />
           <h2>Welcome to React</h2>
         </div>
         <p className="App-intro">
