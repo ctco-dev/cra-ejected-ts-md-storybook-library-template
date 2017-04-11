@@ -7,6 +7,7 @@
     "@types/node": "7.0.12",
     "@types/react": "15.0.21",
     "@types/react-dom": "0.14.23",
+    "@kadira/storybook": "2.35.3",
     "autoprefixer": "6.7.2",
     "awesome-typescript-loader": "3.1.2",
     "case-sensitive-paths-webpack-plugin": "1.1.4",
@@ -46,7 +47,9 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "jest": {
     "collectCoverageFrom": [
