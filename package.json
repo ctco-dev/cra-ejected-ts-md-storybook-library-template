@@ -4,6 +4,7 @@
   "private": true,
   "devDependencies": {
     "@types/jest": "19.2.2",
+    "@types/material-ui": "0.16.60",
     "@types/node": "7.0.12",
     "@types/react": "15.0.21",
     "@types/react-dom": "0.14.23",
@@ -28,6 +29,7 @@
     "postcss-loader": "1.2.2",
     "promise": "7.1.1",
     "react-dev-utils": "0.5.2",
+    "storybook-addon-material-ui": "0.7.7",
     "style-loader": "0.13.1",
     "ts-jest": "19.0.8",
     "tslint": "5.0.0",
@@ -41,8 +43,10 @@
     "whatwg-fetch": "2.0.2"
   },
   "dependencies": {
+    "material-ui": "0.17.2",
     "react": "15.4.2",
-    "react-dom": "15.4.2"
+    "react-dom": "15.4.2",
+    "react-tap-event-plugin": "2.0.1"
   },
   "scripts": {
     "start": "node scripts/start.js",

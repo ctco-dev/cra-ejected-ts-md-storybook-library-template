@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './App.css';
 import * as logo from './logo.svg';
+import NumericTextField from './common/components/NumericTextField';
 
 class App extends React.Component<any, any> {
   render() {
@@ -13,6 +14,7 @@ class App extends React.Component<any, any> {
         <p className="App-intro">
           To get started, edit <code>src/App.tsx</code> and save to reload.
         </p>
+        <NumericTextField id="showcase" floatingLabelText="Welcome to MaterialUI" onChange={() => {}} />
       </div>
     );
   }
