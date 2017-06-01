@@ -1,25 +1,27 @@
-var genDefaultConfig = require('@kadira/storybook/dist/server/config/defaults/webpack.config.js');
-var autoprefixer = require('autoprefixer');
-var paths = require('../config/paths');
+const path = require('path');
+const include = path.resolve(__dirname, '../');
 
-module.exports = function (config, env) {
-  var config = genDefaultConfig(config, env);
-
-  config.resolve.extensions.push('.ts', '.tsx');
-
-  config.module.preLoaders = config.module.preLoaders || [];
-  config.module.preLoaders.push({
-    test: /\.(ts|tsx)$/,
-    loader: 'tslint-loader',
-    include: paths.appSrc,
-  });
-
-  config.module.loaders.push(
-    {
-      test: /\.(ts|tsx)?$/,
-      loader: 'awesome-typescript-loader'
-    }
-  );
-
-  return config;
+module.exports = {
+  devtool: 'inline-source-map',
+  module: {
+    rules: [
+      {
+        test: /\.ts(x?)$/,
+        use: 'awesome-typescript-loader',
+        include
+      },
+      {
+        test: /\.css$/,
+        use: [
+          require.resolve('style-loader'),
+          {
+            loader: require.resolve('css-loader'),
+          },
+        ],
+      },
+    ]
+  },
+  resolve: {
+    extensions: ['.js', '.ts', '.tsx', '.json']
+  }
 };
