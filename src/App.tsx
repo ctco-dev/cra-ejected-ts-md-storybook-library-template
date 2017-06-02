@@ -1,6 +1,5 @@
 import * as React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import * as injectTapEventPlugin from 'react-tap-event-plugin';
 import * as logo from './logo.svg';
 import NumericTextField from './common/components/NumericTextField';
 
