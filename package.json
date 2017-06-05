@@ -77,7 +77,8 @@
       "jsx",
       "ts",
       "tsx"
-    ]
+    ],
+    "testURL": "http://localhost"
   },
   "false": {}
 }
