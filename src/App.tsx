@@ -7,6 +7,21 @@ import './inject-tap-event-plugin';
 import './App.css';
 
 class App extends Component<any, any> {
+
+  interval;
+
+  state = {
+    secondsSinceReload: 0,
+  };
+
+  componentDidMount() {
+    this.interval = setInterval(this.updateTimer, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   render() {
     return (
       <MuiThemeProvider>
@@ -17,11 +32,26 @@ class App extends Component<any, any> {
           </div>
           <p className="App-intro">
             To get started, edit <code>src/App.tsx</code> and save to reload.
+            {this.renderTimeSinceLastReload()}
           </p>
-          <NumericTextField id="showcase" floatingLabelText="Welcome to MaterialUI"/>
+          {this.renderMd()}
         </div>
       </MuiThemeProvider>
     );
+  }
+
+  private renderMd = () => (
+    <NumericTextField id="showcase" floatingLabelText="Welcome to MaterialUI"/>
+  )
+
+  private renderTimeSinceLastReload = () => (
+    <div>
+      {`${this.state.secondsSinceReload} seconds since last reload.`}
+    </div>
+  )
+
+  private updateTimer = () => {
+    this.setState(({secondsSinceReload}) => ({secondsSinceReload: ++secondsSinceReload}));
   }
 }
 

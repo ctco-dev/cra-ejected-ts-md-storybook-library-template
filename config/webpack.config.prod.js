@@ -153,9 +153,9 @@ module.exports = {
       },
       // Process TS with TypeScript & Babel.
       {
-        test: /\.ts(x?)$/,
-        include: paths.appSrc
-        loaders: ['babel-loader', 'awesome-typescript-loader'],
+        test: /\.(ts|tsx)$/,
+        include: paths.appSrc,
+        loader: require.resolve('awesome-typescript-loader'),
       },
       // The notation here is somewhat confusing.
       // "postcss" loader applies autoprefixer to our CSS.
