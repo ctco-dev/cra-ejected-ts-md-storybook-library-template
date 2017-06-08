@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@storybook/addon-actions": "3.0.1",
+    "@storybook/addon-centered": "3.0.0",
     "@storybook/react": "3.0.1",
     "@types/jest": "19.2.4",
     "@types/material-ui": "0.17.10",
