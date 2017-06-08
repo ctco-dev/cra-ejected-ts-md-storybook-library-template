@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/ctco-dev/cra-ejected-ts-md-storybook-template.svg?branch=master)](https://travis-ci.org/ctco-dev/cra-ejected-ts-md-storybook-template)
+[![Maintenance](https://img.shields.io/maintenance/yes/2017.svg)]()
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
