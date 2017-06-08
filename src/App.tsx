@@ -26,28 +26,36 @@ class App extends Component<any, any> {
     return (
       <MuiThemeProvider>
         <div className="App">
-          <div className="App-header">
-            <img src={logo} className="App-logo" alt="logo"/>
-            <h2>Welcome to React</h2>
-          </div>
-          <p className="App-intro">
-            To get started, edit <code>src/App.tsx</code> and save to reload.
-            {this.renderTimeSinceLastReload()}
-          </p>
+          {this.renderHeader()}
+          {this.renderIntro()}
+          {this.renderTimeSinceLastReload()}
           {this.renderMd()}
         </div>
       </MuiThemeProvider>
     );
   }
 
-  private renderMd = () => (
-    <NumericTextField id="showcase" floatingLabelText="Welcome to MaterialUI"/>
+  private renderHeader = () => (
+    <div className="App-header">
+      <img src={logo} className="App-logo" alt="logo"/>
+      <h2>Welcome to React</h2>
+    </div>
+  )
+
+  private renderIntro = () => (
+    <p className="App-intro">
+      To get started, edit <code>src/App.tsx</code> and save to reload.
+    </p>
   )
 
   private renderTimeSinceLastReload = () => (
-    <div>
-      {`${this.state.secondsSinceReload} seconds since last reload.`}
-    </div>
+    <p className="App-timer">
+      <strong>{this.state.secondsSinceReload}</strong> seconds since last cold reload.
+    </p>
+  )
+
+  private renderMd = () => (
+    <NumericTextField id="showcase" floatingLabelText="Welcome to MaterialUI"/>
   )
 
   private updateTimer = () => {

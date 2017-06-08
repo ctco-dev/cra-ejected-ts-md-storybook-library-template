@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as injectTapEventPlugin from 'react-tap-event-plugin';
+import React from 'react';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 injectTapEventPlugin();
 
