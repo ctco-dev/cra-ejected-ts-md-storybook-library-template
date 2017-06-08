@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {Component} from 'react';
 import TextField from 'material-ui/TextField';
 
 interface NumericTextFieldProps extends __MaterialUI.TextFieldProps {
@@ -7,7 +7,7 @@ interface NumericTextFieldProps extends __MaterialUI.TextFieldProps {
 
 const normalizeInput = (value: string) => value.replace(/\D/g, '');
 
-class NumericTextField extends React.Component<NumericTextFieldProps, any> {
+class NumericTextField extends Component<NumericTextFieldProps, any> {
   render() {
     return (
       <TextField

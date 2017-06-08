@@ -151,11 +151,11 @@ module.exports = {
           name: 'static/media/[name].[hash:8].[ext]',
         },
       },
-      // Process TS with TypeScript.
+      // Process TS with TypeScript & Babel.
       {
-        test: /\.(ts|tsx)$/,
-        include: paths.appSrc,
-        loader: require.resolve('awesome-typescript-loader'),
+        test: /\.ts(x?)$/,
+        include: paths.appSrc
+        loaders: ['babel-loader', 'awesome-typescript-loader'],
       },
       // The notation here is somewhat confusing.
       // "postcss" loader applies autoprefixer to our CSS.

@@ -7,7 +7,7 @@ module.exports = {
     rules: [
       {
         test: /\.ts(x?)$/,
-        use: 'awesome-typescript-loader',
+        loaders: ['babel-loader', 'awesome-typescript-loader'],
         include
       },
       {
