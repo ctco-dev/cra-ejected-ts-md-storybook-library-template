@@ -7,7 +7,7 @@ module.exports = {
     rules: [
       {
         test: /\.ts(x?)$/,
-        use: 'awesome-typescript-loader',
+        loader: require.resolve('awesome-typescript-loader'),
         include
       },
       {

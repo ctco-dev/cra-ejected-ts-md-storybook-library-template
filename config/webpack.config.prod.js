@@ -151,7 +151,7 @@ module.exports = {
           name: 'static/media/[name].[hash:8].[ext]',
         },
       },
-      // Process TS with TypeScript.
+      // Process TS with TypeScript & Babel.
       {
         test: /\.(ts|tsx)$/,
         include: paths.appSrc,
