@@ -4,6 +4,7 @@
     "moduleResolution": "node",
     "target": "es6",
     "allowSyntheticDefaultImports": true,
+    "rootDir": "src",
     "sourceMap": true,
     "jsx": "preserve",
     "lib": [
@@ -18,10 +19,16 @@
     "noUnusedLocals": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "build",
+    ".storybook",
+    "config",
+    "public",
+    "scripts",
+    ".awcache"
   ],
   "awesomeTypescriptLoaderOptions": {
-    "useBabel" : true,
+    "useBabel": true,
     "useCache": true
   }
 }
