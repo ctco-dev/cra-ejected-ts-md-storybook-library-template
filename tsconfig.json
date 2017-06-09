@@ -24,7 +24,8 @@
     "config",
     "public",
     "scripts",
-    ".awcache"
+    ".awcache",
+    "coverage"
   ],
   "awesomeTypescriptLoaderOptions": {
     "useBabel": true,
