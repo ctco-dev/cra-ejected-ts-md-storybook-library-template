@@ -4,7 +4,6 @@
     "moduleResolution": "node",
     "target": "es6",
     "allowSyntheticDefaultImports": true,
-    "rootDir": "src",
     "sourceMap": true,
     "jsx": "preserve",
     "lib": [
@@ -25,7 +24,8 @@
     "config",
     "public",
     "scripts",
-    ".awcache"
+    ".awcache",
+    "coverage"
   ],
   "awesomeTypescriptLoaderOptions": {
     "useBabel": true,
