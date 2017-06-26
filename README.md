@@ -20,7 +20,6 @@ Features
 become accessible inside browser as `process.env.REACT_APP_...`)
 - [Azure deployment configuration](cloud/azure#deployment)
  (you can use __Deploy to Azure__ button in the top to deploy this repo instantly)
-- ...
 
 ## Table of Contents
 
