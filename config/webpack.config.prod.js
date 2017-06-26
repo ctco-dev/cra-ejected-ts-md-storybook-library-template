@@ -241,7 +241,9 @@ module.exports = {
     // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
     // It is absolutely essential that NODE_ENV was set to production here.
     // Otherwise React will be compiled in the very slow development mode.
-    new webpack.DefinePlugin(env.stringified),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'), // DO NOT inline whole process.env!
+    }),
     // Minify the code.
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -251,6 +253,9 @@ module.exports = {
         // Pending further investigation:
         // https://github.com/mishoo/UglifyJS2/issues/2011
         comparisons: false,
+      },
+      mangle: {
+        except: ['process'], // DO NOT mangle 'process'!
       },
       output: {
         comments: false,
@@ -308,5 +313,6 @@ module.exports = {
     fs: 'empty',
     net: 'empty',
     tls: 'empty',
+    process: false, // DO NOT mock 'process'!
   },
 };

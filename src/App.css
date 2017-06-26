@@ -22,6 +22,25 @@
   font-size: large;
 }
 
+.App-greeting {
+  font-size: large;
+}
+
+.App-greetingMsg {
+  padding: .3em 1em;
+  background-color: lightblue;
+}
+
+.App-greetingStub {
+  padding: .3em 1em;
+  background-color: black;
+  color: white;
+}
+
+.App-greetingStub > code {
+  color: lightblue;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

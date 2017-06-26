@@ -30,6 +30,7 @@ class App extends Component<any, any> {
           {this.renderIntro()}
           {this.renderTimeSinceLastReload()}
           {this.renderMd()}
+          {this.renderCloudMessage()}
         </div>
       </MuiThemeProvider>
     );
@@ -61,6 +62,20 @@ class App extends Component<any, any> {
   private updateTimer = () => {
     this.setState(({secondsSinceReload}) => ({secondsSinceReload: ++secondsSinceReload}));
   }
+
+  private renderCloudMessage = () => (
+    <p className="App-greeting">
+      {process.env.REACT_APP_GREETING
+        ? <span className="App-greetingMsg">{process.env.REACT_APP_GREETING}</span>
+        : (
+          <span className="App-greetingStub">
+            Please set <code>REACT_APP_GREETING</code> environment variable on your
+            app server.
+          </span>
+        )
+      }
+    </p>
+  )
 }
 
 export default App;

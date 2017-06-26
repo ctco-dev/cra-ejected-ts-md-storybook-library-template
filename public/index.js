@@ -16,7 +16,7 @@ const injectEnv = (mask, env, content) => content.replace(
 // Extract env variables by mask
 const filterEnv = (mask, env) => Object.keys(env)
   .filter(key => key.startsWith(mask))
-  .reduce((acc, curr) => Object.assign({}, acc, {[curr]: process.env[curr]}), {});
+  .reduce((acc, curr) => Object.assign({}, acc, {[curr]: env[curr]}), {});
 
 const src = fs.readFileSync(SRC_FILENAME, 'utf8');
 const dest = injectEnv(ENV_VAR_MASK, process.env, src);
@@ -24,8 +24,11 @@ const dest = injectEnv(ENV_VAR_MASK, process.env, src);
 // serve
 http.createServer((request, response) => {
 
-  response.writeHead(200, {'Content-Type': 'text/html'});
-  response.end(dest, 'utf-8');
+  response.writeHead(200, {
+    'Content-Type': 'text/html',
+    'Cache-Control': 'no-cache' // don't cache index.html!
+  });
+  response.end(dest, 'utf8');
 
 }).listen(PORT, (err) => {
   if (err) {

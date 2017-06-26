@@ -1,10 +1,26 @@
 [![Build Status](https://travis-ci.org/ctco-dev/cra-ejected-ts-md-storybook-template.svg?branch=master)](https://travis-ci.org/ctco-dev/cra-ejected-ts-md-storybook-template)
 [![Maintenance](https://img.shields.io/maintenance/yes/2017.svg)]()
 
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+
+All significant differences to [Create React App](https://github.com/facebookincubator/create-react-app)
+ are listed in [Features](#features) section.
 
 Below you will find some information on how to perform common tasks.<br>
 You can find the most recent version of this guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
+
+Features
+--------
+
+- [12 Factor App configuration](cloud/azure#12-factor-app-configuration) for production build 
+ (`REACT_APP_`-prefixed env variables, being injected by application server at run-time,
+become accessible inside browser as `process.env.REACT_APP_...`)
+- [Azure deployment configuration](cloud/azure#deployment)
+ (you can use __Deploy to Azure__ button in the top to deploy this repo instantly)
+- ...
 
 ## Table of Contents
 
