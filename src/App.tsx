@@ -1,13 +1,21 @@
-import React, {Component} from 'react';
+import * as React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import logo from './logo.svg';
 import NumericTextField from './common/components/NumericTextField';
+import WaterfallChart from './libs/Graph';
 
 import './inject-tap-event-plugin';
 import './App.css';
 
-class App extends Component<any, any> {
+const mockData = [
+  { name: 'Product Revenue', value: 420000 },
+  { name: 'Services Revenue', value: 210000 },
+  { name: 'Fixed Costs', value: -170000 },
+  { name: 'Variable Costs', value: -140000 },
+];
 
+class App extends React.Component<any, any> {
+  graphEl;
   interval;
 
   state = {
@@ -16,6 +24,9 @@ class App extends Component<any, any> {
 
   componentDidMount() {
     this.interval = setInterval(this.updateTimer, 1000);
+
+    const graph = new WaterfallChart(this.graphEl, mockData);
+    graph.drawChart();
   }
 
   componentWillUnmount() {
@@ -31,6 +42,7 @@ class App extends Component<any, any> {
           {this.renderTimeSinceLastReload()}
           {this.renderMd()}
           {this.renderCloudMessage()}
+          <div id="graph" ref={el => this.graphEl = el} />
         </div>
       </MuiThemeProvider>
     );
@@ -38,7 +50,7 @@ class App extends Component<any, any> {
 
   private renderHeader = () => (
     <div className="App-header">
-      <img src={logo} className="App-logo" alt="logo"/>
+      <img src={logo} className="App-logo" alt="logo" />
       <h2>Welcome to React</h2>
     </div>
   )
@@ -56,11 +68,11 @@ class App extends Component<any, any> {
   )
 
   private renderMd = () => (
-    <NumericTextField id="showcase" floatingLabelText="Welcome to MaterialUI"/>
+    <NumericTextField id="showcase" floatingLabelText="Welcome to MaterialUI" />
   )
 
   private updateTimer = () => {
-    this.setState(({secondsSinceReload}) => ({secondsSinceReload: ++secondsSinceReload}));
+    this.setState(({ secondsSinceReload }) => ({ secondsSinceReload: ++secondsSinceReload }));
   }
 
   private renderCloudMessage = () => (
