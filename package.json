@@ -3,7 +3,7 @@
   "version": "1.0.7",
   "private": true,
   "dependencies": {
-    "d3": "3.5.17",
+    "d3": "4.9.1",
     "material-ui": "0.18.5",
     "react": "15.6.1",
     "react-dom": "15.6.1",
