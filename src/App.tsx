@@ -8,10 +8,12 @@ import './inject-tap-event-plugin';
 import './App.css';
 
 const mockData = [
-  { name: 'Product Revenue', value: 420000 },
-  { name: 'Services Revenue', value: 210000 },
-  { name: 'Fixed Costs', value: -170000 },
-  { name: 'Variable Costs', value: -140000 },
+  { name: 'Original Rating', value: 4500 },
+  { name: 'Step 1', value: 750 },
+  { name: 'Step 2', value: -450 },
+  { name: 'Step 3', value: 825 },
+  { name: 'Step 4', value: 1550 },
+  { name: 'Step 5', value: -250 },
 ];
 
 class App extends React.Component<any, any> {

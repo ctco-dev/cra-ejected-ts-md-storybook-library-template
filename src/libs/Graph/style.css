@@ -1,4 +1,5 @@
-.WaterfallChart__bar--total rect {
+.WaterfallChart__bar--total rect,
+.WaterfallChart__bar--base rect {
   fill: #BFBFBF;
 }
 
