@@ -59,7 +59,7 @@
     "build-libs": "node scripts/build-libs.js",
     "test": "node scripts/test.js --env=jsdom",
     "storybook": "start-storybook -p 9009",
-    "build-storybook": "build-storybook",
+    "build-storybook": "build-storybook"
   },
   "jest": {
     "collectCoverageFrom": [
