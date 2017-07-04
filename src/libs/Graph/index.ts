@@ -4,7 +4,7 @@ import './style.css';
 const margin = { top: 20, right: 30, bottom: 30, left: 40 };
 const width = 960 - margin.left - margin.right;
 const height = 500 - margin.top - margin.bottom;
-const padding = 0.3;
+const padding = 0.75;
 
 export class WaterFallChart {
   private element: any;
@@ -22,16 +22,17 @@ export class WaterFallChart {
     this.data = data;
     this.options = options;
 
-    // this.x = d3.scaleBand().range([0, width], padding).round(true);
-    this.x = d3.scale.ordinal().rangeRoundBands([0, width], padding);
+    this.x = d3.scaleBand().rangeRound([0, width]).padding(padding - .015); // v4
+    // this.x = d3.scale.ordinal().rangeRoundBands([0, width], padding); // v3
 
-    // this.y = d3.scaleLinear().range([height, 0]);
-    this.y = d3.scale.linear().range([height, 0]);
+    this.y = d3.scaleLinear().range([height, 0]); // v4
+    // this.y = d3.scale.linear().range([height, 0]); // v3
 
-    // this.xAxis = d3.axisBottom().scale(this.x);
-    // this.yAxis = d3.axisLeft().scale(this.y).tickFormat(d => this.dollarFormatter(d));
-    this.xAxis = d3.svg.axis().scale(this.x).orient('bottom');
-    this.yAxis = d3.svg.axis().scale(this.y).orient('left').tickFormat(d => this.dollarFormatter(d));
+    this.xAxis = d3.axisBottom().scale(this.x); // v4
+    // this.xAxis = d3.svg.axis().scale(this.x).orient('bottom'); // v3
+
+    this.yAxis = d3.axisLeft().scale(this.y).tickFormat(d => this.dollarFormatter(d)); // v4
+    // this.yAxis = d3.svg.axis().scale(this.y).orient('left').tickFormat(d => this.dollarFormatter(d)); // v3
   }
 
   type(d) {
@@ -60,11 +61,11 @@ export class WaterFallChart {
       preparedData[i].start = cumulative;
       cumulative += data[i].value;
       preparedData[i].end = cumulative;
-      preparedData[i].class = (preparedData[i].value >= 0) ? 'positive' : 'negative';
+      preparedData[i].class = (preparedData[i].value >= 0) ? 'WaterfallChart__bar--positive' : 'WaterfallChart__bar--negative';
     }
 
     preparedData.push({
-      class: 'total',
+      class: 'WaterfallChart__bar--total',
       end: cumulative,
       name: 'Total',
       start: 0,
@@ -75,6 +76,7 @@ export class WaterFallChart {
 
   createSvg(element) {
     return d3.select(element).append('svg')
+      .attr('class', 'WaterfallChart')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
@@ -91,44 +93,44 @@ export class WaterFallChart {
 
   drawAxis() {
     this.svg.append('g')
-      .attr('class', 'x axis')
+      .attr('class', 'WaterfallChart__axis WaterfallChart__axis--x')
       .attr('transform', `translate(0, ${height})`)
       .call(this.xAxis);
 
     this.svg.append('g')
-      .attr('class', 'y axis')
+      .attr('class', 'WaterfallChart__axis WaterfallChart__axis--y')
       .call(this.yAxis);
   }
 
   drawBars() {
-    const bar = this.svg.selectAll('.bar')
+    const bar = this.svg.selectAll('WaterfallChart__bar')
       .data(this.preparedData)
       .enter()
       .append('g')
-        .attr('class', d => `bar ${d.class}`)
+        .attr('class', d => `WaterfallChart__bar ${d.class}`)
         .attr('transform', d => `translate(${this.x(d.name)}, 0)`);
 
     bar.append('rect')
       .attr('y', d => this.y(Math.max(d.start, d.end)))
       .attr('height', d => Math.abs(this.y(d.start) - this.y(d.end)))
-      // .attr('width', this.x.bandwidth());
-      .attr('width', this.x.rangeBand());
+      .attr('width', this.x.bandwidth()); // v4
+      // .attr('width', this.x.rangeBand()); // v3
 
     bar.append('text')
-      // .attr('x', this.x.bandwidth() / 2)
-      .attr('x', this.x.rangeBand() / 2)
+      .attr('x', this.x.bandwidth() / 2) // v4
+      // .attr('x', this.x.rangeBand() / 2) // v3
       .attr('y', d => this.y(d.end) + 5)
-      .attr('dy', d => ((d.class === 'negative') ? '-' : '') + '.75em')
+      .attr('dy', d => ((d.class === 'WaterfallChart__bar--negative') ? '' : '-') + '.75em')
       .text(d => this.dollarFormatter(d.end - d.start));
 
-    bar.filter(d => d.class !== 'total')
+    bar.filter(d => d.class !== 'WaterfallChart__bar--total')
       .append('line')
-        .attr('class', 'connector')
-        // .attr('x1', this.x.bandwidth() + 5)
-        .attr('x1', this.x.rangeBand() + 5)
+        .attr('class', 'WaterfallChart__connector')
+        .attr('x1', this.x.bandwidth() + 5) // v4
+        // .attr('x1', this.x.rangeBand() + 5) // v3
         .attr('y1', d => this.y(d.end))
-        // .attr('x2', this.x.bandwidth() / (1 - padding) - 5)
-        .attr('x2', this.x.rangeBand() / (1 - padding) - 5)
+        .attr('x2', this.x.bandwidth() / (1 - padding) - 5) // v4
+        // .attr('x2', this.x.rangeBand() / (1 - padding) - 5) // v3
         .attr('y2', d => this.y(d.end));
   }
 

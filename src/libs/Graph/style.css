@@ -1,31 +1,32 @@
-.bar.total rect {
-  fill: steelblue;
+.WaterfallChart__bar--total rect {
+  fill: #BFBFBF;
 }
 
-.bar.positive rect {
-  fill: darkolivegreen;
-}
-.bar.negative rect {
-  fill: crimson;
+.WaterfallChart__bar--positive rect {
+  fill: #92D050;
 }
 
-.bar line.connector {
+.WaterfallChart__bar--negative rect {
+  fill: #00B0F0;
+}
+
+.WaterfallChart__bar line.WaterfallChart__connector {
   stroke: grey;
   stroke-dasharray: 3;
 }
 
-.bar text {
-  fill: white;
+.WaterfallChart__bar text {
+  fill: black;
   font: 12px sans-serif;
   text-anchor: middle;
 }
 
-.axis text {
+.WaterfallChart__axis text {
   font: 10px sans-serif;
 }
 
-.axis path,
-.axis line {
+.WaterfallChart__axis path,
+.WaterfallChart__axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
