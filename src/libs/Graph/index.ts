@@ -53,7 +53,7 @@ export class WaterFallChart {
     this.element = element;
     this.data = data;
     this.options = { ...this.options, ...options };
-    
+
     this.options.width = this.calculateWidth(this.options.scale);
     this.options.height = this.calculateHeight(this.options.width, this.options.aspectRatio);
   }
@@ -88,12 +88,21 @@ export class WaterFallChart {
     // Transform data (i.e., finding cumulative values and total) for easier charting
     let cumulative = 0;
     for (let i = 0; i < data.length; i++) {
+
+      // For new data structure - in dev
+      // const d = {
+      //   ...data[i],
+      //   class: this.getBarClassName((data[i].layers[this.props.layer] - cumulative), i),
+      //   end: i === 0 ? cumulative + data[i].layers[this.props.layer] : cumulative + (data[i].layers[this.props.layer] - cumulative),
+      //   start: cumulative,
+      // };
+
       const preparedDataItem: WaterfallChartPreparedDataItem = {
         ...data[i],
         class: this.getBarClassName(data[i].value, i),
         end: cumulative + data[i].value,
         start: cumulative,
-      }
+      };
 
       cumulative += data[i].value;
       preparedData.push(preparedDataItem);
@@ -111,16 +120,18 @@ export class WaterFallChart {
   }
 
   private createSvg(element: HTMLElement) {
-    const { width, height, margin } = this.options;
+    const { width, height, margin, aspectRatio } = this.options;
+
+    d3.select(element).select('div.WaterfallChart').remove();
 
     return d3.select(element)
       .append('div')
       .attr('class', 'WaterfallChart')
+      .attr('style', `padding-bottom: ${(100 / (aspectRatio)) + 2}%`)
       .append('svg')
       .attr('class', 'WaterfallChart__svg')
+      .attr('preserveAspectRatio', 'xMinYMin meet')
       .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.bottom + margin.top}`)
-      // .attr('width', width + margin.left + margin.right)
-      // .attr('height', height + margin.top + margin.bottom)
       .append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
   }
@@ -140,16 +151,10 @@ export class WaterFallChart {
     this.preparedData = this.prepareData(this.data);
 
     this.x = d3.scaleBand().rangeRound([0, width]).padding(barPadding - .015); // v4
-    // this.x = d3.scale.ordinal().rangeRoundBands([0, width], barPadding); // v3
-
     this.y = d3.scaleLinear().range([height, 0]); // v4
-    // this.y = d3.scale.linear().range([height, 0]); // v3
 
     this.xAxis = d3.axisBottom().scale(this.x); // v4
-    // this.xAxis = d3.svg.axis().scale(this.x).orient('bottom'); // v3
-
     this.yAxis = d3.axisLeft().scale(this.y).tickSize(-width).tickFormat(d => this.dollarFormatter(d)); // v4
-    // this.yAxis = d3.svg.axis().scale(this.y).orient('left').tickFormat(d => this.dollarFormatter(d)); // v3
 
     this.x.domain(this.preparedData.map((d: WaterfallChartPreparedDataItem) => d.name));
     this.y.domain([0, d3.max(this.preparedData, (d: WaterfallChartPreparedDataItem) => d.end)]);
@@ -176,6 +181,7 @@ export class WaterFallChart {
       .data(this.preparedData)
       .enter()
       .append('g')
+      .attr('opacity', 0)
       .attr('class', (d: WaterfallChartPreparedDataItem) => `WaterfallChart__bar ${d.class}`)
       .attr('transform', (d: WaterfallChartPreparedDataItem) => `translate(${this.x(d.name)}, 0)`);
 
@@ -183,11 +189,9 @@ export class WaterFallChart {
       .attr('y', (d: WaterfallChartPreparedDataItem) => this.y(Math.max(d.start, d.end)))
       .attr('height', (d: WaterfallChartPreparedDataItem) => Math.abs(this.y(d.start) - this.y(d.end)))
       .attr('width', this.x.bandwidth()); // v4
-    // .attr('width', this.x.rangeBand()); // v3
 
     bar.append('text')
       .attr('x', this.x.bandwidth() / 2) // v4
-      // .attr('x', this.x.rangeBand() / 2) // v3
       .attr('y', (d: WaterfallChartPreparedDataItem) => this.y(d.end) + 5)
       .attr('dy', (d: WaterfallChartPreparedDataItem) => ((d.class === 'WaterfallChart__bar--negative') ? '' : '-') + '.75em')
       .text((d: WaterfallChartPreparedDataItem) => this.dollarFormatter(d.end - d.start));
@@ -196,11 +200,14 @@ export class WaterFallChart {
       .append('line')
       .attr('class', 'WaterfallChart__connector')
       .attr('x1', this.x.bandwidth() + 5) // v4
-      // .attr('x1', this.x.rangeBand() + 5) // v3
       .attr('y1', (d: WaterfallChartPreparedDataItem) => this.y(d.end))
       .attr('x2', this.x.bandwidth() / (1 - barPadding) - 5) // v4
-      // .attr('x2', this.x.rangeBand() / (1 - barPadding) - 5) // v3
       .attr('y2', (d: WaterfallChartPreparedDataItem) => this.y(d.end));
+
+    bar.transition()
+      .duration(400)
+      .ease(d3.easeLinear)
+      .attr('opacity', 1);
   }
 }
 

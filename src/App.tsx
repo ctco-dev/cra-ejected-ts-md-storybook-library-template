@@ -1,8 +1,8 @@
 import * as React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import logo from './logo.svg';
-import NumericTextField from './common/components/NumericTextField';
-import WaterfallChart from './libs/Graph';
+
+// import WaterfallChart from './libs/Graph';
+import WaterfallChart from './WaterfallChart/WaterfallChart';
 
 import './inject-tap-event-plugin';
 import './App.css';
@@ -16,86 +16,132 @@ const mockData = [
   { name: 'Step 5', value: -250 },
 ];
 
+const mockData2 = [
+  { name: 'Original Test', value: 40500 },
+  { name: 'Step 1', value: 75460 },
+  { name: 'Step 2', value: -4550 },
+  { name: 'Step 3', value: 8255 },
+  { name: 'Step 4', value: 15520 },
+  { name: 'Step 5', value: -2540 },
+];
+
+// API Data - indev
+// const apiData = [
+//   {
+//     currency: 'EUR',
+//     displayName: 'Original Rating',
+//     layers: [
+//       {
+//         attachment: 1000000,
+//         cover: 1000000,
+//       }
+//     ],
+//     ratingId: 1549308,
+//   },
+//   {
+//     currency: 'EUR',
+//     displayName: 'Calculation Version',
+//     layers: [
+//       {
+//         attachment: 1000000,
+//         cover: 1000000,
+//         frequency: 1,
+//         loss: 508675.7711509539,
+//       }
+//     ],
+//     ratingId: 1549316,
+//   },
+//   {
+//     currency: 'EUR',
+//     displayName: 'Parameter Set',
+//     layers: [
+//       {
+//         attachment: 1000000,
+//         cover: 1000000,
+//         frequency: 1,
+//         loss: 508675.7711509539,
+//       }
+//     ],
+//     ratingId: 1549317,
+//   },
+//   {
+//     currency: 'EUR',
+//     displayName: 'Inception Date',
+//     layers: [
+//       {
+//         attachment: 1000000,
+//         cover: 1000000,
+//         frequency: 1,
+//         loss: 518822.5825016733,
+//       }
+//     ],
+//     ratingId: 1549318,
+//   },
+//   {
+//     currency: 'EUR',
+//     displayName: 'Renewed Rating',
+//     layers: [
+//       {
+//         attachment: 1000000,
+//         cover: 1000000,
+//         frequency: 1,
+//         loss: 518822.5825016733,
+//       },
+//       {
+//         attachment: 2000000,
+//         cover: 1000000,
+//         frequency: 0.15979530183875734,
+//         loss: 117565.21384617564,
+//       },
+//     ],
+//     ratingId: 1549315,
+//   },
+// ];
+
 class App extends React.Component<any, any> {
   graphEl;
-  interval;
+  graphLib;
 
   state = {
-    secondsSinceReload: 0,
+    data: mockData,
   };
 
   componentDidMount() {
-    this.interval = setInterval(this.updateTimer, 1000);
-
-    const graph = new WaterfallChart(this.graphEl, mockData);
-    graph.drawChart();
+    // Library
+    // this.renderWaterfallChart();
+    setInterval(() => {
+      this.setState({
+        data: JSON.stringify(this.state.data) === JSON.stringify(mockData) ? mockData2 : mockData,
+      });
+    }, 3000);
   }
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
+  // Library
+  // componentDidUpdate() {
+  //   this.renderWaterfallChart();
+  // }
+
+  // Library
+  // renderWaterfallChart() {
+  //   this.graphLib = new WaterfallChart(this.graphEl, this.state.data);
+  //   this.graphLib.drawChart();
+  // }
 
   render() {
     return (
       <MuiThemeProvider>
         <div className="App">
-          {this.renderHeader()}
-          {this.renderIntro()}
-          {this.renderTimeSinceLastReload()}
-          {this.renderMd()}
-          {this.renderCloudMessage()}
-          <div
-            id="graph"
-            style={{
-              width: '90%',
-            }}
-            ref={el => this.graphEl = el}
-          />
+          {/* Library */}
+          {/*<div id="graph-lib" ref={el => this.graphEl = el} />*/}
+
+          {/* React component */}
+          <div id="graph-react">
+            <WaterfallChart {...this.state} />
+          </div>
         </div>
       </MuiThemeProvider>
     );
   }
-
-  private renderHeader = () => (
-    <div className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <h2>Welcome to React</h2>
-    </div>
-  )
-
-  private renderIntro = () => (
-    <p className="App-intro">
-      To get started, edit <code>src/App.tsx</code> and save to reload.
-    </p>
-  )
-
-  private renderTimeSinceLastReload = () => (
-    <p className="App-timer">
-      <strong>{this.state.secondsSinceReload}</strong> seconds since last cold reload.
-    </p>
-  )
-
-  private renderMd = () => (
-    <NumericTextField id="showcase" floatingLabelText="Welcome to MaterialUI" />
-  )
-
-  private updateTimer = () => {
-    this.setState(({ secondsSinceReload }) => ({ secondsSinceReload: ++secondsSinceReload }));
-  }
-
-  private renderCloudMessage = () => (
-    <p className="App-greeting">
-      {process.env.REACT_APP_GREETING
-        ? <span className="App-greetingMsg">{process.env.REACT_APP_GREETING}</span>
-        : (
-          <span className="App-greetingStub">
-            Please set <code>REACT_APP_GREETING</code> environment variable on your
-            app server.
-          </span>
-        )
-      }
-    </p>
-  )
 }
 
 export default App;
