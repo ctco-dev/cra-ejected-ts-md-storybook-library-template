@@ -1,7 +1,7 @@
 import * as React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-// import WaterfallChart from './libs/Graph';
+// import WaterfallChart from './libs/WaterfallChart';
 import WaterfallChart from './WaterfallChart/WaterfallChart';
 
 import './inject-tap-event-plugin';
