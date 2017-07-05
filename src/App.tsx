@@ -44,7 +44,13 @@ class App extends React.Component<any, any> {
           {this.renderTimeSinceLastReload()}
           {this.renderMd()}
           {this.renderCloudMessage()}
-          <div id="graph" ref={el => this.graphEl = el} />
+          <div
+            id="graph"
+            style={{
+              width: '90%',
+            }}
+            ref={el => this.graphEl = el}
+          />
         </div>
       </MuiThemeProvider>
     );
