@@ -44,6 +44,7 @@ jspm_packages
 
 # production
 /build
+/build-libs
 
 # misc
 .DS_Store
