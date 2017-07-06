@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { dollarFormatter } from '../../helpers/numbers';
-import DealStoryLineData, { DealStoryLineDataItem, DealStoryLineLayer, DealStoryLinePreparedDataItem } from './DealStoryLineData';
+import { prepareData, DealStoryLineDataItem, DealStoryLinePreparedDataItem } from './DealStoryLineData';
 
 import './style.css';
 
@@ -23,8 +23,6 @@ interface DealStoryLineOptions {
 export class DealStoryLine {
   private element: HTMLElement;
   private data: DealStoryLineDataItem[];
-  private layer: number;
-  private value: string;
   private options: DealStoryLineOptions = {
     aspectRatio: (3 / 1),
     barPadding: 0.75,
@@ -51,7 +49,7 @@ export class DealStoryLine {
     this.element = element;
     this.data = data;
     this.options = { ...this.options, ...options };
-    this.preparedData = DealStoryLineData.prepareData(this.data);
+    this.preparedData = prepareData(this.data, this.options.layer, this.options.value);
 
     this.setSize();
     this.initChart();
@@ -72,7 +70,7 @@ export class DealStoryLine {
     }
 
     this.clearChart();
-    this.preparedData = DealStoryLineData.prepareData(this.data);
+    this.preparedData = prepareData(this.data, this.options.layer, this.options.value);
 
     if (options && this.options.aspectRatio !== options.aspectRatio || options && this.options.scale !== options.scale) {
       this.setSize();
@@ -150,7 +148,7 @@ export class DealStoryLine {
   }
 
   private drawBars(): void {
-    const { barPadding } = this.options;
+    const { barPadding, layer, value } = this.options;
 
     const bar = this.svg.selectAll('DealStoryLine__bar')
       .data(this.preparedData)
@@ -169,7 +167,7 @@ export class DealStoryLine {
       .attr('x', this.x.bandwidth() / 2) // v4
       .attr('y', (d: DealStoryLinePreparedDataItem) => this.y(d.end) + 5)
       .attr('dy', (d: DealStoryLinePreparedDataItem) => ((d.class === 'DealStoryLine__bar--negative') ? '' : '-') + '.75em')
-      .text((d: DealStoryLinePreparedDataItem) => dollarFormatter(d.layers[this.layer][this.value]));
+      .text((d: DealStoryLinePreparedDataItem) => dollarFormatter(d.layers[layer][value]));
 
     bar.filter((d: DealStoryLinePreparedDataItem) => d.class !== 'DealStoryLine__bar--total')
       .append('line')
