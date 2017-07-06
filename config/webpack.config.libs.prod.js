@@ -26,20 +26,37 @@ const cssFilename = '[name]/css/[name].css';
 // To have this structure working with relative paths, we have to use custom options.
 const extractTextPluginOptions = shouldUseRelativeAssetPaths
   ? // Making sure that the publicPath goes back to to build folder.
-    { publicPath: Array(cssFilename.split('/').length).join('../') }
+  { publicPath: Array(cssFilename.split('/').length).join('../') }
   : {};
 
 function getDirectories(srcpath) {
-    return fs.readdirSync(srcpath).filter(function (file) {
-        return fs.statSync(path.join(srcpath, file)).isDirectory();
-    });
+  return fs.readdirSync(srcpath).filter(function (file) {
+    return fs.statSync(path.join(srcpath, file)).isDirectory();
+  });
 }
 
 const entry = {};
 const libraries = getDirectories(paths.libsSrc);
 
+function DtsBundlePlugin() { }
+DtsBundlePlugin.prototype.apply = function (compiler) {
+  compiler.plugin('done', function () {
+    var dts = require('dts-bundle');
+
+    for (let i = 0; i < libraries.length; i++) {
+      dts.bundle({
+        name: libraries[i],
+        main: `build-libs/types/libs/${libraries[i]}/index.d.ts`,
+        out: `../../../${libraries[i]}/types/index.d.ts`,
+        removeSource: true,
+        outputAsModuleFolder: true // to use npm in-package typings
+      });
+    }
+  });
+};
+
 for (let i = 0; i < libraries.length; i++) {
-    entry[libraries[i]] = paths.libsSrc + '/'  + libraries[i] + '/index.ts';
+  entry[libraries[i]] = paths.libsSrc + '/' + libraries[i] + '/index.ts';
 }
 
 // This is the production configuration.
@@ -147,7 +164,23 @@ module.exports = {
       {
         test: /\.(ts)$/,
         include: paths.libsSrc,
-        loader: require.resolve('awesome-typescript-loader'),
+        loaders: [
+          {
+            loader: 'babel-loader',
+            query: {
+              presets: ['es2015']
+            }
+          },
+          {
+            loader: 'ts-loader',
+            query: {
+              compilerOptions: {
+                declaration: true,
+                outDir: 'types'
+              }
+            }
+          }
+        ]
       },
       // The notation here is somewhat confusing.
       // "postcss" loader applies autoprefixer to our CSS.
@@ -206,6 +239,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new DtsBundlePlugin(),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
     // It is absolutely essential that NODE_ENV was set to production here.
