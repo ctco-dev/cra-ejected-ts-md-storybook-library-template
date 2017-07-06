@@ -4,7 +4,7 @@ import { prepareData, DealStoryLineDataItem, DealStoryLinePreparedDataItem } fro
 
 import './style.css';
 
-interface DealStoryLineOptions {
+export interface DealStoryLineOptions {
   aspectRatio: number;
   width: number;
   height: number;
@@ -20,7 +20,7 @@ interface DealStoryLineOptions {
   value: string;
 }
 
-export class DealStoryLine {
+class DealStoryLine {
   private element: HTMLElement;
   private data: DealStoryLineDataItem[];
   private options: DealStoryLineOptions = {
