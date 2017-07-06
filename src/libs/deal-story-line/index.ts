@@ -1,4 +1,6 @@
 import * as d3 from 'd3';
+import { dollarFormatter } from '../../helpers/numbers';
+
 import './style.css';
 
 interface DealStoryLineLayer {
@@ -64,11 +66,9 @@ export class DealStoryLine {
   private xAxis: any;
   private yAxis: any;
 
-  constructor(element: HTMLElement, data: DealStoryLineDataItem[] = [], value: string = 'loss', layer: number = 0, options = {}) {
+  constructor(element: HTMLElement, data: DealStoryLineDataItem[] = [], options = {}) {
     this.element = element;
     this.data = data;
-    this.value = value;
-    this.layer = layer;
     this.options = { ...this.options, ...options };
     this.preparedData = this.prepareData(this.data);
 
@@ -83,15 +83,8 @@ export class DealStoryLine {
     this.drawBars();
   }
 
-  updateChart(
-    value: string = this.value,
-    layer: number = this.layer,
-    data: DealStoryLineDataItem[] = this.data,
-    options: DealStoryLineOptions = this.options,
-  ) {
+  updateChart(data: DealStoryLineDataItem[] = this.data, options: DealStoryLineOptions = this.options) {
     this.data = data;
-    this.value = value;
-    this.layer = layer;
 
     if (options && JSON.stringify(this.options) !== JSON.stringify(options)) {
       this.options = { ...this.options, ...options };
@@ -107,16 +100,6 @@ export class DealStoryLine {
 
     this.initChart();
     this.drawChart();
-  }
-
-  private dollarFormatter(n: number): string {
-    n = Math.round(n);
-
-    if (Math.abs(n) > 1000) {
-      return `$${Math.round(n / 1000)}K`;
-    }
-
-    return `$${n}`;
   }
 
   private getBarClassName(value: number, index: number, cumulative: number, total: number): string {
@@ -215,7 +198,7 @@ export class DealStoryLine {
     this.y = d3.scaleLinear().range([height, 0]); // v4
 
     this.xAxis = d3.axisBottom().scale(this.x); // v4
-    this.yAxis = d3.axisLeft().scale(this.y).tickSize(-width).tickFormat(d => this.dollarFormatter(d)); // v4
+    this.yAxis = d3.axisLeft().scale(this.y).tickSize(-width).tickFormat(d => dollarFormatter(d)); // v4
 
     this.x.domain(this.preparedData.map((d: DealStoryLinePreparedDataItem) => d.displayName));
     this.y.domain([0, d3.max(this.preparedData, (d: DealStoryLinePreparedDataItem) => d.end)]);
@@ -255,7 +238,7 @@ export class DealStoryLine {
       .attr('x', this.x.bandwidth() / 2) // v4
       .attr('y', (d: DealStoryLinePreparedDataItem) => this.y(d.end) + 5)
       .attr('dy', (d: DealStoryLinePreparedDataItem) => ((d.class === 'DealStoryLine__bar--negative') ? '' : '-') + '.75em')
-      .text((d: DealStoryLinePreparedDataItem) => this.dollarFormatter(d.layers[this.layer][this.value]));
+      .text((d: DealStoryLinePreparedDataItem) => dollarFormatter(d.layers[this.layer][this.value]));
 
     bar.filter((d: DealStoryLinePreparedDataItem) => d.class !== 'DealStoryLine__bar--total')
       .append('line')
