@@ -1,4 +1,4 @@
-.WaterfallChart {
+.DealStoryLine__container {
   display: inline-block;
   position: relative;
   width: 100%;
@@ -6,43 +6,43 @@
   overflow: hidden; 
 }
 
-.WaterfallChart__svg {
+.DealStoryLine__svg {
   display: inline-block;
   position: absolute;
   top: 0;
   left: 0;
 }
 
-.WaterfallChart__bar--total rect,
-.WaterfallChart__bar--base rect {
+.DealStoryLine__bar--total rect,
+.DealStoryLine__bar--base rect {
   fill: #BFBFBF;
 }
 
-.WaterfallChart__bar--positive rect {
+.DealStoryLine__bar--positive rect {
   fill: #92D050;
 }
 
-.WaterfallChart__bar--negative rect {
+.DealStoryLine__bar--negative rect {
   fill: #00B0F0;
 }
 
-.WaterfallChart__bar line.WaterfallChart__connector {
+.DealStoryLine__bar line.DealStoryLine__connector {
   stroke: grey;
   stroke-dasharray: 3;
 }
 
-.WaterfallChart__bar text {
+.DealStoryLine__bar text {
   fill: black;
   font: 12px sans-serif;
   text-anchor: middle;
 }
 
-.WaterfallChart__axis text {
+.DealStoryLine__axis text {
   font: 10px sans-serif;
 }
 
-.WaterfallChart__axis path,
-.WaterfallChart__axis line {
+.DealStoryLine__axis path,
+.DealStoryLine__axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;

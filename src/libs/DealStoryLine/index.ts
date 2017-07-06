@@ -32,7 +32,9 @@ interface DealStoryLineOptions {
     bottom: number;
     left: number;
   };
+  layer: number;
   scale: number;
+  value: string;
 }
 
 export class DealStoryLine {
@@ -44,6 +46,7 @@ export class DealStoryLine {
     aspectRatio: (3 / 1),
     barPadding: 0.75,
     height: 960 / (3 / 1),
+    layer: 0,
     margin: {
       bottom: 30,
       left: 40,
@@ -51,6 +54,7 @@ export class DealStoryLine {
       top: 20,
     },
     scale: 9.6,
+    value: 'loss',
     width: 960,
   };
   private preparedData: DealStoryLinePreparedDataItem[];
@@ -60,7 +64,7 @@ export class DealStoryLine {
   private xAxis: any;
   private yAxis: any;
 
-  constructor(element: HTMLElement, data: DealStoryLineDataItem[], value = 'loss', layer = 0, options = {}) {
+  constructor(element: HTMLElement, data: DealStoryLineDataItem[], value: string = 'loss', layer: number = 0, options = {}) {
     this.element = element;
     this.data = data;
     this.value = value;
@@ -71,13 +75,13 @@ export class DealStoryLine {
     this.options.height = this.calculateHeight(this.options.width, this.options.aspectRatio);
   }
 
-  drawChart() {
+  drawChart(): void {
     this.initChart();
     this.drawAxis();
     this.drawBars();
   }
 
-  private dollarFormatter(n: number) {
+  private dollarFormatter(n: number): string {
     n = Math.round(n);
 
     if (Math.abs(n) > 1000) {
@@ -87,7 +91,7 @@ export class DealStoryLine {
     return `$${n}`;
   }
 
-  private getBarClassName(value, index, cumulative, total) {
+  private getBarClassName(value: number, index: number, cumulative: number, total: number): string {
     if (cumulative === 0) {
       return 'DealStoryLine__bar--base';
     }
@@ -99,58 +103,46 @@ export class DealStoryLine {
     return (value >= 0) ? 'DealStoryLine__bar--positive' : 'DealStoryLine__bar--negative';
   }
 
-  private getEndValue(itemValue, cumulative) {
+  private getStartValue(cumulative: number, endValue: number, index: number, total: number): number {
+    if (index === total - 1) {
+      return 0;
+    }
+
+    return endValue === cumulative ? cumulative * 0.99 : cumulative;
+  }
+
+  private getEndValue(itemValue: number, cumulative: number): number {
     return cumulative === 0 ? itemValue : cumulative - (cumulative - itemValue);
   }
 
   private prepareData(data: DealStoryLineDataItem[]) {
     const preparedData: DealStoryLinePreparedDataItem[] = [];
 
-    // Transform data (i.e., finding cumulative values and total) for easier charting
-    let cumulative = 0;
+    let cumulative: number = 0;
     for (let i = 0; i < data.length; i++) {
       const itemValue = data[i].layers[this.layer][this.value];
-
       if (!itemValue) {
         continue;
       }
 
-      const endValue = this.getEndValue(itemValue, cumulative);
+      const endValue: number = this.getEndValue(itemValue, cumulative);
 
       // For new data structure - in dev
       const preparedDataItem: DealStoryLinePreparedDataItem = {
         ...data[i],
         class: this.getBarClassName(endValue, i, cumulative, data.length),
-        end: endValue === cumulative ? cumulative + 1000 : endValue, 
-        start: cumulative,
+        end: endValue, 
+        start: this.getStartValue(cumulative, endValue, i, data.length),
       };
 
-      // const preparedDataItem: DealStoryLinePreparedDataItem = {
-      //   ...data[i],
-      //   class: this.getBarClassName(data[i].value, i),
-      //   end: cumulative + data[i].value,
-      //   start: cumulative,
-      // };
-
-      console.log(preparedDataItem);
-
-      // cumulative += data[i].value;
       preparedData.push(preparedDataItem);
-      cumulative = cumulative === 0 ? itemValue : cumulative - (itemValue - cumulative);
+      cumulative = endValue;
     }
-
-    // preparedData.push({
-    //   class: 'DealStoryLine__bar--total',
-    //   end: cumulative,
-    //   displayName: 'Renewed Rating',
-    //   start: 0,
-    //   value: 0,
-    // });
 
     return preparedData;
   }
 
-  private createSvg(element: HTMLElement) {
+  private createSvg(element: HTMLElement): HTMLElement {
     const { width, height, margin, aspectRatio } = this.options;
 
     d3.select(element).select('div.DealStoryLine').remove();
@@ -167,15 +159,15 @@ export class DealStoryLine {
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
   }
 
-  private calculateWidth(scale) {
+  private calculateWidth(scale: number): number {
     return scale * 100;
   }
 
-  private calculateHeight(width, aspectRatio) {
+  private calculateHeight(width: number, aspectRatio: number): number {
     return width / aspectRatio;
   }
 
-  private initChart() {
+  private initChart(): void {
     const { width, height, barPadding } = this.options;
 
     this.svg = this.createSvg(this.element);
@@ -191,7 +183,7 @@ export class DealStoryLine {
     this.y.domain([0, d3.max(this.preparedData, (d: DealStoryLinePreparedDataItem) => d.end)]);
   }
 
-  private drawAxis() {
+  private drawAxis(): void {
     const { height } = this.options;
 
     this.svg.append('g')
@@ -205,7 +197,7 @@ export class DealStoryLine {
       .select('.domain').remove();
   }
 
-  private drawBars() {
+  private drawBars(): void {
     const { barPadding } = this.options;
 
     const bar = this.svg.selectAll('DealStoryLine__bar')
@@ -225,14 +217,14 @@ export class DealStoryLine {
       .attr('x', this.x.bandwidth() / 2) // v4
       .attr('y', (d: DealStoryLinePreparedDataItem) => this.y(d.end) + 5)
       .attr('dy', (d: DealStoryLinePreparedDataItem) => ((d.class === 'DealStoryLine__bar--negative') ? '' : '-') + '.75em')
-      .text((d: DealStoryLinePreparedDataItem) => this.dollarFormatter(d.end - d.start));
+      .text((d: DealStoryLinePreparedDataItem) => this.dollarFormatter(d.layers[this.layer][this.value]));
 
     bar.filter((d: DealStoryLinePreparedDataItem) => d.class !== 'DealStoryLine__bar--total')
       .append('line')
       .attr('class', 'DealStoryLine__connector')
       .attr('x1', this.x.bandwidth() + 5) // v4
       .attr('y1', (d: DealStoryLinePreparedDataItem) => this.y(d.end))
-      .attr('x2', this.x.bandwidth() / (1 - barPadding) - 5) // v4
+      .attr('x2', this.x.bandwidth() / (1 - barPadding) - barPadding * 24) // v4
       .attr('y2', (d: DealStoryLinePreparedDataItem) => this.y(d.end));
 
     bar.transition()

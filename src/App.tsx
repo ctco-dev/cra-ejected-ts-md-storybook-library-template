@@ -1,31 +1,13 @@
 import * as React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import DealStoryLine from './libs/DealStoryLine';
-// import DealStoryLine from './DealStoryLine';
+// import DealStoryLine from './libs/DealStoryLine';
+import DealStoryLine from './DealStoryLine';
 
 import './inject-tap-event-plugin';
 import './App.css';
 
-// const mockData = [
-//   { name: 'Original Rating', value: 4500 },
-//   { name: 'Step 1', value: 750 },
-//   { name: 'Step 2', value: -450 },
-//   { name: 'Step 3', value: 825 },
-//   { name: 'Step 4', value: 1550 },
-//   { name: 'Step 5', value: -250 },
-// ];
-
-// const mockData2 = [
-//   { name: 'Original Test', value: 40500 },
-//   { name: 'Step 1', value: 75460 },
-//   { name: 'Step 2', value: -4550 },
-//   { name: 'Step 3', value: 8255 },
-//   { name: 'Step 4', value: 15520 },
-//   { name: 'Step 5', value: -2540 },
-// ];
-
-// API Data - indev
+// API Data
 const apiData = [
   {
     currency: 'EUR',
@@ -108,7 +90,7 @@ class App extends React.Component<any, any> {
 
   componentDidMount() {
     // Library
-    this.renderDealStoryLine();
+    // this.renderDealStoryLine();
 
     // setInterval(() => {
     //   this.setState({
@@ -118,27 +100,27 @@ class App extends React.Component<any, any> {
   }
 
   // Library
-  componentDidUpdate() {
-    this.renderDealStoryLine();
-  }
+  // componentDidUpdate() {
+  //   this.renderDealStoryLine();
+  // }
 
   // Library
-  renderDealStoryLine() {
-    this.graphLib = new DealStoryLine(this.graphEl, this.state.data);
-    this.graphLib.drawChart();
-  }
+  // renderDealStoryLine() {
+  //   this.graphLib = new DealStoryLine(this.graphEl, this.state.data);
+  //   this.graphLib.drawChart();
+  // }
 
   render() {
     return (
       <MuiThemeProvider>
         <div className="App">
           {/* Library */}
-          <div id="graph-lib" ref={el => this.graphEl = el} />
+          {/*<div id="graph-lib" ref={el => this.graphEl = el} />*/}
 
-          {/* React component */}
-          {/*<div id="graph-react">
+          {/*React component */}
+          <div id="graph-react">
             <DealStoryLine {...this.state} />
-          </div>*/}
+          </div>
         </div>
       </MuiThemeProvider>
     );
