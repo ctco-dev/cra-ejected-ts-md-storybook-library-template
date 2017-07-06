@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { default as DealStoryLineLib } from '../libs/DealStoryLine';
+import { default as DealStoryLineLib } from '../libs/deal-story-line';
 
 class DealStoryLine extends React.Component<any, any> {
   private graph: any;

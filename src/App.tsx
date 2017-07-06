@@ -1,8 +1,8 @@
 import * as React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import DealStoryLine from './DealStoryLine';
-import { default as DealStoryLineLib } from './libs/DealStoryLine';
+import DealStoryLine from './deal-story-line';
+import { default as DealStoryLineLib } from './libs/deal-story-line';
 
 import './inject-tap-event-plugin';
 import './App.css';
