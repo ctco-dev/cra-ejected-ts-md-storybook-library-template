@@ -64,21 +64,49 @@ export class DealStoryLine {
   private xAxis: any;
   private yAxis: any;
 
-  constructor(element: HTMLElement, data: DealStoryLineDataItem[], value: string = 'loss', layer: number = 0, options = {}) {
+  constructor(element: HTMLElement, data: DealStoryLineDataItem[] = [], value: string = 'loss', layer: number = 0, options = {}) {
     this.element = element;
     this.data = data;
     this.value = value;
     this.layer = layer;
     this.options = { ...this.options, ...options };
+    this.preparedData = this.prepareData(this.data);
 
-    this.options.width = this.calculateWidth(this.options.scale);
-    this.options.height = this.calculateHeight(this.options.width, this.options.aspectRatio);
+    this.setSize();
+    this.initChart();
+
+    this.svg = this.createSvg(this.element);
   }
 
   drawChart(): void {
-    this.initChart();
     this.drawAxis();
     this.drawBars();
+  }
+
+  updateChart(
+    value: string = this.value,
+    layer: number = this.layer,
+    data: DealStoryLineDataItem[] = this.data,
+    options: DealStoryLineOptions = this.options,
+  ) {
+    this.data = data;
+    this.value = value;
+    this.layer = layer;
+
+    if (options && JSON.stringify(this.options) !== JSON.stringify(options)) {
+      this.options = { ...this.options, ...options };
+    }
+
+    this.clearChart();
+    this.preparedData = this.prepareData(this.data);
+
+    if (options && this.options.aspectRatio !== options.aspectRatio || options && this.options.scale !== options.scale) {
+      this.setSize();
+      this.svg = this.createSvg(this.element);
+    }
+
+    this.initChart();
+    this.drawChart();
   }
 
   private dollarFormatter(n: number): string {
@@ -127,11 +155,10 @@ export class DealStoryLine {
 
       const endValue: number = this.getEndValue(itemValue, cumulative);
 
-      // For new data structure - in dev
       const preparedDataItem: DealStoryLinePreparedDataItem = {
         ...data[i],
         class: this.getBarClassName(endValue, i, cumulative, data.length),
-        end: endValue, 
+        end: endValue,
         start: this.getStartValue(cumulative, endValue, i, data.length),
       };
 
@@ -145,11 +172,13 @@ export class DealStoryLine {
   private createSvg(element: HTMLElement): HTMLElement {
     const { width, height, margin, aspectRatio } = this.options;
 
-    d3.select(element).select('div.DealStoryLine').remove();
+    if (this.svg) {
+      d3.select(element).select('div.DealStoryLine__container').remove();
+    }
 
     return d3.select(element)
       .append('div')
-      .attr('class', 'DealStoryLine')
+      .attr('class', 'DealStoryLine__container')
       .attr('style', `padding-bottom: ${(100 / (aspectRatio)) + 2}%`)
       .append('svg')
       .attr('class', 'DealStoryLine__svg')
@@ -167,11 +196,20 @@ export class DealStoryLine {
     return width / aspectRatio;
   }
 
+  private setSize() {
+    this.options.width = this.calculateWidth(this.options.scale);
+    this.options.height = this.calculateHeight(this.options.width, this.options.aspectRatio);
+  }
+
+  private clearChart(): void {
+    this.preparedData = [];
+
+    this.svg.selectAll('DealStoryLine__bar').remove();
+    this.svg.selectAll('g').remove();
+  }
+
   private initChart(): void {
     const { width, height, barPadding } = this.options;
-
-    this.svg = this.createSvg(this.element);
-    this.preparedData = this.prepareData(this.data);
 
     this.x = d3.scaleBand().rangeRound([0, width]).padding(barPadding - .015); // v4
     this.y = d3.scaleLinear().range([height, 0]); // v4

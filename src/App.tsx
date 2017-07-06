@@ -1,8 +1,8 @@
 import * as React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-// import DealStoryLine from './libs/DealStoryLine';
 import DealStoryLine from './DealStoryLine';
+import { default as DealStoryLineLib } from './libs/DealStoryLine';
 
 import './inject-tap-event-plugin';
 import './App.css';
@@ -86,36 +86,31 @@ class App extends React.Component<any, any> {
 
   state = {
     data: apiData,
+    options: undefined,
   };
 
   componentDidMount() {
     // Library
-    // this.renderDealStoryLine();
-
-    // setInterval(() => {
-    //   this.setState({
-    //     data: JSON.stringify(this.state.data) === JSON.stringify(mockData) ? mockData2 : mockData,
-    //   });
-    // }, 3000);
+    this.renderDealStoryLine();
   }
 
   // Library
-  // componentDidUpdate() {
-  //   this.renderDealStoryLine();
-  // }
+  componentDidUpdate() {
+    this.graphLib.updateChart(undefined, undefined, this.state.data, this.state.options);
+  }
 
   // Library
-  // renderDealStoryLine() {
-  //   this.graphLib = new DealStoryLine(this.graphEl, this.state.data);
-  //   this.graphLib.drawChart();
-  // }
+  renderDealStoryLine() {
+    this.graphLib = new DealStoryLineLib(this.graphEl, this.state.data);
+    this.graphLib.drawChart();
+  }
 
   render() {
     return (
       <MuiThemeProvider>
         <div className="App">
           {/* Library */}
-          {/*<div id="graph-lib" ref={el => this.graphEl = el} />*/}
+          <div id="graph-lib" ref={el => this.graphEl = el} />
 
           {/*React component */}
           <div id="graph-react">
