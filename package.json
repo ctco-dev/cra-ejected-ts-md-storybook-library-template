@@ -22,6 +22,7 @@
     "@types/react-tap-event-plugin": "0.0.30",
     "@types/storybook__react": "3.0.1",
     "autoprefixer": "7.1.1",
+    "awesome-typescript-loader": "3.2.1",
     "babel-loader": "7.1.1",
     "babel-preset-es2015": "6.24.1",
     "babel-preset-react-app": "3.0.1",
