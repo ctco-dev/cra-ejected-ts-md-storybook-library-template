@@ -18,7 +18,6 @@ export interface DealStoryLinePreparedDataItem extends DealStoryLineDataItem {
     start: number;
 }
 
-
 const getBarClassName = (value: number, index: number, cumulative: number, total: number): string => {
     if (cumulative === 0) {
         return 'DealStoryLine__bar--base';
