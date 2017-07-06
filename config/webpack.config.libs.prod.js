@@ -46,7 +46,7 @@ DtsBundlePlugin.prototype.apply = function (compiler) {
     for (let i = 0; i < libraries.length; i++) {
       dts.bundle({
         name: libraries[i],
-        main: `build-libs/types/libs/${libraries[i]}/index.d.ts`,
+        main: `build-libs/types/libs/${libraries[i]}/**/*.d.ts`,
         out: `../../../${libraries[i]}/types/index.d.ts`,
         removeSource: true,
         outputAsModuleFolder: true // to use npm in-package typings
@@ -104,7 +104,7 @@ module.exports = {
       // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
       // please link the files into your node_modules/ and let module-resolution kick in.
       // Make sure your source files are compiled, as they will not be processed in any way.
-      new ModuleScopePlugin(paths.libsSrc),
+      new ModuleScopePlugin(paths.appSrc),
     ],
   },
   module: {
@@ -163,7 +163,7 @@ module.exports = {
       // Process TS with TypeScript & Babel.
       {
         test: /\.(ts)$/,
-        include: paths.libsSrc,
+        include: paths.appSrc,
         loaders: [
           {
             loader: 'babel-loader',
