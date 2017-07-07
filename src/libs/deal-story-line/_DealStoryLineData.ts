@@ -1,16 +1,4 @@
-export interface DealStoryLineLayer {
-    attachment?: number;
-    cover?: number;
-    frequency?: number;
-    loss?: number;
-}
-
-export interface DealStoryLineDataItem {
-    currency: string;
-    displayName: string;
-    layers: DealStoryLineLayer[];
-    ratingId: number;
-}
+import { DealStoryLineDataItem } from './types';
 
 export interface DealStoryLinePreparedDataItem extends DealStoryLineDataItem {
     class: string;

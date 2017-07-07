@@ -1,24 +1,12 @@
 import * as d3 from 'd3';
+
 import { dollarFormatter } from '../../helpers/numbers';
-import { prepareData, DealStoryLineDataItem, DealStoryLinePreparedDataItem } from './_DealStoryLineData';
+import { prepareData, DealStoryLinePreparedDataItem } from './_DealStoryLineData';
+import { DealStoryLineOptions, DealStoryLineDataItem } from './types';
 
-import './style.css';
-
-export interface DealStoryLineOptions {
-  aspectRatio: number;
-  width: number;
-  height: number;
-  barPadding: number;
-  margin: {
-    top: number;
-    right: number;
-    bottom: number;
-    left: number;
-  };
-  layer: number;
-  scale: number;
-  value: string;
-}
+// Use require instead of import to include css to
+// avoid from typescript trying to generate typings for it
+require('./style.css'); // tslint:disable-line:no-var-requires
 
 class DealStoryLine {
   private element: HTMLElement;
