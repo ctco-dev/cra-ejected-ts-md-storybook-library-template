@@ -1,0 +1,49 @@
+.DealStoryLine__container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  vertical-align: middle; 
+  overflow: hidden; 
+}
+
+.DealStoryLine__svg {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.DealStoryLine__bar--total rect,
+.DealStoryLine__bar--base rect {
+  fill: #BFBFBF;
+}
+
+.DealStoryLine__bar--positive rect {
+  fill: #92D050;
+}
+
+.DealStoryLine__bar--negative rect {
+  fill: #00B0F0;
+}
+
+.DealStoryLine__bar line.DealStoryLine__connector {
+  stroke: grey;
+  stroke-dasharray: 3;
+}
+
+.DealStoryLine__bar text {
+  fill: black;
+  font: 12px sans-serif;
+  text-anchor: middle;
+}
+
+.DealStoryLine__axis text {
+  font: 10px sans-serif;
+}
+
+.DealStoryLine__axis path,
+.DealStoryLine__axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}

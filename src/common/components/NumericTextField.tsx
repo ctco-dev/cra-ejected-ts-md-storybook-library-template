@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import TextField from 'material-ui/TextField';
 
-interface NumericTextFieldProps extends __MaterialUI.TextFieldProps {
+export interface NumericTextFieldProps extends __MaterialUI.TextFieldProps {
   onChange?: (event: React.FormEvent<{}>, value: string) => void;
 }
 
