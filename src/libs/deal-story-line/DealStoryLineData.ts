@@ -26,11 +26,7 @@ export const getBarClassName = (value: number, cumulative: number): string => {
     return (value >= cumulative) ? 'DealStoryLine__bar--positive' : 'DealStoryLine__bar--negative';
 };
 
-export const getStartValue = (cumulative: number, endValue: number, index: number, total: number): number => {
-    if (index === total - 1) {
-        return 0;
-    }
-
+export const getStartValue = (cumulative: number, endValue: number): number => {
     return endValue === cumulative ? cumulative * 0.99 : cumulative;
 };
 
