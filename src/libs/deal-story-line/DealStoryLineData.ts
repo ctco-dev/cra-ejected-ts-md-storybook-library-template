@@ -18,7 +18,7 @@ export interface DealStoryLinePreparedDataItem extends DealStoryLineDataItem {
     start: number;
 }
 
-const getBarClassName = (value: number, index: number, cumulative: number, total: number): string => {
+export const getBarClassName = (value: number, index: number, cumulative: number, total: number): string => {
     if (cumulative === 0) {
         return 'DealStoryLine__bar--base';
     }
@@ -27,10 +27,10 @@ const getBarClassName = (value: number, index: number, cumulative: number, total
         return 'DealStoryLine__bar--total';
     }
 
-    return (value >= 0) ? 'DealStoryLine__bar--positive' : 'DealStoryLine__bar--negative';
+    return (value >= cumulative) ? 'DealStoryLine__bar--positive' : 'DealStoryLine__bar--negative';
 };
 
-const getStartValue = (cumulative: number, endValue: number, index: number, total: number): number => {
+export const getStartValue = (cumulative: number, endValue: number, index: number, total: number): number => {
     if (index === total - 1) {
         return 0;
     }
@@ -38,7 +38,7 @@ const getStartValue = (cumulative: number, endValue: number, index: number, tota
     return endValue === cumulative ? cumulative * 0.99 : cumulative;
 };
 
-const getEndValue = (itemValue: number, cumulative: number): number => {
+export const getEndValue = (itemValue: number, cumulative: number): number => {
     return cumulative === 0 ? itemValue : cumulative - (cumulative - itemValue);
 };
 
