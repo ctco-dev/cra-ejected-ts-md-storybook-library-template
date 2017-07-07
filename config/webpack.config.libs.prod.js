@@ -49,8 +49,9 @@ DtsBundlePlugin.prototype.apply = function (compiler) {
         name: libraries[i],
         main: `build-libs/types/libs/${libraries[i]}/**/*.d.ts`,
         out: `../../../${libraries[i]}/types/index.d.ts`,
-        removeSource: true,
-        outputAsModuleFolder: true // to use npm in-package typings
+        removeSource: false,
+        outputAsModuleFolder: true, // to use npm in-package typings
+        exclude: /^_.*.d.ts$/,
       });
     }
   });

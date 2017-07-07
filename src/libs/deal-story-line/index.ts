@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { dollarFormatter } from '../../helpers/numbers';
-import { prepareData, DealStoryLineDataItem, DealStoryLinePreparedDataItem } from './DealStoryLineData';
+import { prepareData, DealStoryLineDataItem, DealStoryLinePreparedDataItem } from './_DealStoryLineData';
 
 import './style.css';
 
@@ -45,7 +45,7 @@ class DealStoryLine {
   private xAxis: any;
   private yAxis: any;
 
-  constructor(element: HTMLElement, data: DealStoryLineDataItem[] = [], options = {}) {
+  constructor(element: HTMLElement, data: DealStoryLineDataItem[] = [], options: Partial<DealStoryLineOptions> = {}) {
     this.element = element;
     this.data = data;
     this.options = { ...this.options, ...options };
@@ -62,7 +62,7 @@ class DealStoryLine {
     this.drawBars();
   }
 
-  updateChart(data: DealStoryLineDataItem[] = this.data, options: DealStoryLineOptions = this.options) {
+  updateChart(data: DealStoryLineDataItem[] = this.data, options: Partial<DealStoryLineOptions> = this.options) {
     this.data = data;
 
     if (options && JSON.stringify(this.options) !== JSON.stringify(options)) {
