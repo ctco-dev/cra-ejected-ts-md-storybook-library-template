@@ -18,13 +18,9 @@ export interface DealStoryLinePreparedDataItem extends DealStoryLineDataItem {
     start: number;
 }
 
-export const getBarClassName = (value: number, index: number, cumulative: number, total: number): string => {
+export const getBarClassName = (value: number, cumulative: number): string => {
     if (cumulative === 0) {
         return 'DealStoryLine__bar--base';
-    }
-
-    if (index === total - 1) {
-        return 'DealStoryLine__bar--total';
     }
 
     return (value >= cumulative) ? 'DealStoryLine__bar--positive' : 'DealStoryLine__bar--negative';
@@ -56,7 +52,7 @@ export const prepareData = (data: DealStoryLineDataItem[], layer: number = 0, va
 
         const preparedDataItem: DealStoryLinePreparedDataItem = {
             ...data[i],
-            class: getBarClassName(endValue, i, cumulative, data.length),
+            class: getBarClassName(endValue, cumulative),
             end: endValue,
             start: getStartValue(cumulative, endValue, i, data.length),
         };
@@ -64,6 +60,10 @@ export const prepareData = (data: DealStoryLineDataItem[], layer: number = 0, va
         preparedData.push(preparedDataItem);
         cumulative = endValue;
     }
+
+    // Override classname and start value for the last bar
+    preparedData[preparedData.length - 1].class = 'DealStoryLine__bar--total';
+    preparedData[preparedData.length - 1].start = 0;
 
     return preparedData;
 };
