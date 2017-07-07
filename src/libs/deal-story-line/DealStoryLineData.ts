@@ -38,10 +38,10 @@ export const prepareData = (data: DealStoryLineDataItem[], layer: number = 0, va
     const preparedData: DealStoryLinePreparedDataItem[] = [];
 
     let cumulative: number = 0;
-    for (const dataItem of data) {
+    data.forEach(dataItem => {
         const itemValue = dataItem.layers[layer][value];
         if (!itemValue) {
-            continue;
+            return;
         }
 
         const endValue: number = getEndValue(itemValue, cumulative);
@@ -55,7 +55,7 @@ export const prepareData = (data: DealStoryLineDataItem[], layer: number = 0, va
 
         preparedData.push(preparedDataItem);
         cumulative = endValue;
-    }
+    });
 
     // Override classname and start value for the last bar
     preparedData[preparedData.length - 1].class = 'DealStoryLine__bar--total';
