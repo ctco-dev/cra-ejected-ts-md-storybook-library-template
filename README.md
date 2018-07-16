@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/ctco-dev/cra-ejected-ts-md-storybook-template.svg?branch=master)](https://travis-ci.org/ctco-dev/cra-ejected-ts-md-storybook-template)
 [![Maintenance](https://img.shields.io/maintenance/yes/2017.svg)]()
 
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/) [![Greenkeeper badge](https://badges.greenkeeper.io/ctco-dev/ui-component-ts-react-storybook-template.svg)](https://greenkeeper.io/)
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
